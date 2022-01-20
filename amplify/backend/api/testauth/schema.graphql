@@ -1,0 +1,13 @@
+type Post @model @auth(rules: [{allow: public, operations: [read]}, {allow: private, operations: [create, read]}, {allow: owner}]) {
+  id: ID!
+  title: String!
+  content: String
+  bolgID: ID @index(name: "byBlog")
+}
+
+type Blog @model @auth(rules: [{allow: public, operations: [read]}, {allow: groups, groups: ["admin"], operations: [read, create, update, delete]}]) {
+  id: ID!
+  name: String!
+  Posts: [Post] @hasMany(indexName: "byBlog", fields: ["id"])
+}
+ 
